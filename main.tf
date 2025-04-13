@@ -13,6 +13,14 @@ locals {
     pg_database = var.db_name
     pg_port     = local.db_port
   })
+
+
+  rds_sg_ingress = [
+    for cidr in module.vpc.private_subnets_cidr_blocks : {
+      port        = local.db_port
+      cidr_block  = cidr
+    }
+  ]
 }
 
 
@@ -44,12 +52,7 @@ module "security_group__rds" {
 
   name = "${local.resource_prefix}-db"
   vpc_id = module.vpc.vpc_id
-  ingress_rules = [
-    {
-      port= local.db_port
-      cidr_blocks= module.vpc.private_subnets_cidr_blocks
-    }
-  ]
+  ingress_rules = local.rds_sg_ingress
 
   depends_on = [
     module.vpc
@@ -64,11 +67,11 @@ module "security_group__alb" {
   ingress_rules = [
     {
       port = 80
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     },
     {
       port = var.backend_application_port
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     }
   ]
 
@@ -85,7 +88,7 @@ module "security_group__backend" {
   ingress_rules = [
     {
       port = var.backend_application_port
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     },
     {
       port = var.backend_application_port
@@ -93,7 +96,7 @@ module "security_group__backend" {
     },
     {
       port = 22
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     }
   ]
 
@@ -111,7 +114,7 @@ module "security_group__frontend" {
   ingress_rules = [
     {
       port = 80
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     },
     {
       port = 80
@@ -119,7 +122,7 @@ module "security_group__frontend" {
     },
     {
       port = 22
-      cidr_blocks = "0.0.0.0/0"
+      cidr_block = "0.0.0.0/0"
     }
   ]
 

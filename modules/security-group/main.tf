@@ -34,6 +34,6 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
 
 
   # One of these two will be used
-  cidr_ipv4                = try(each.value.cidr_blocks, null)
+  cidr_ipv4                = try(each.value.cidr_block, null)
   referenced_security_group_id = try(each.value.source_security_group_id, null)
 }

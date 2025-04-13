@@ -64,11 +64,11 @@ module "security_group__alb" {
   ingress_rules = [
     {
       port = 80
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       port = var.backend_application_port
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 
@@ -85,7 +85,7 @@ module "security_group__backend" {
   ingress_rules = [
     {
       port = var.backend_application_port
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       port = var.backend_application_port
@@ -93,7 +93,7 @@ module "security_group__backend" {
     },
     {
       port = 22
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 
@@ -111,7 +111,7 @@ module "security_group__frontend" {
   ingress_rules = [
     {
       port = 80
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       port = 80
@@ -119,7 +119,7 @@ module "security_group__frontend" {
     },
     {
       port = 22
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 

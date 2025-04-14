@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const app = express();
@@ -9,6 +10,9 @@ const pool = new Pool({
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE || 'corine',
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.get('/health', (req, res) => {
